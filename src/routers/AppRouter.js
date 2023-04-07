@@ -22,7 +22,7 @@ import { connectSignalrAction } from "../redux/thunks/signalrThunk";
 export default function AppRouter() {
   const dispatch = useDispatch();
   const userAuth = JSON.parse(localStorage.getItem("userInfo"));
-  if (userAuth?.token) {
+  if (userAuth) {
     dispatch(loginSection(userAuth));
     dispatch(connectSignalrAction(userAuth.token));
   }
