@@ -1,14 +1,18 @@
 import { configureStore } from "@reduxjs/toolkit";
-import appReducer from "./slices/appSlice";
+import homeReducer from "./slices/homeSlice";
 import authReducer from "./slices/authSlice";
 import signalRSlice from "./slices/signalrSlice";
 
 const store = configureStore({
   reducer: {
-    app: appReducer,
+    home: homeReducer,
     auth: authReducer,
     signalr: signalRSlice,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });
 
 export default store;

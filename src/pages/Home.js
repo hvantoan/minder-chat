@@ -9,7 +9,7 @@ import Conversation from "../components/Home/Conversation";
 
 export default function Home() {
   const theme = useTheme();
-  const { sidebar } = useSelector((state) => state.app);
+  const { sidebar } = useSelector((state) => state.home);
 
   return (
     <Stack direction="row" sx={{ width: "100%" }}>

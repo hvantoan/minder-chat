@@ -1,6 +1,6 @@
 import React, { lazy } from "react";
-import { useSelector } from "react-redux";
-import { selectAuth } from "../redux/slices/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { loginSection, selectAuth } from "../redux/slices/authSlice";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { PrivateRoute } from "./routes/PrivateRoute";
 import { PublicRoute } from "./routes/PublicRoute";
@@ -17,10 +17,17 @@ import {
 } from "../constants/routes";
 import AppLayout from "../layouts/AppLayout";
 import DashboardLayout from "../layouts/DashboardLayout";
+import { connectSignalrAction } from "../redux/thunks/signalrThunk";
 
 export default function AppRouter() {
+  const dispatch = useDispatch();
+  const userAuth = JSON.parse(localStorage.getItem("userInfo"));
+  if (userAuth?.token) {
+    dispatch(loginSection(userAuth));
+    dispatch(connectSignalrAction(userAuth.token));
+  }
   const { isAuth } = useSelector(selectAuth);
-  console.log("Is Authentication:", isAuth);
+  if (isAuth) console.log("Is Authentication:", isAuth);
 
   //Auth
   const LoginPage = Loadable(lazy(() => import("../pages/Login")));

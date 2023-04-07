@@ -28,7 +28,7 @@ import {
 } from "phosphor-react";
 import AntSwitch from "../../components/AntSwitch";
 import { useDispatch } from "react-redux";
-import { toggleSidebar, updateSidebarType } from "../../redux/slices/appSlice";
+import { toggleSidebar, updateSidebarType } from "../../redux/slices/homeSlice";
 
 const Contact = () => {
   const theme = useTheme();

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Fab,
@@ -21,6 +21,8 @@ import {
 import { styled, useTheme } from "@mui/material/styles";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
+import { useDispatch, useSelector } from "react-redux";
+import { sendMessageAction } from "../../../redux/thunks/messageThunk";
 
 const StyledInput = styled(TextField)(({ theme }) => ({
   "& .MuiInputBase-input": {
@@ -62,10 +64,12 @@ const Actions = [
   },
 ];
 
-const ChatInput = ({ setOpenPicker }) => {
+const ChatInput = ({ setOpenPicker, setText }) => {
   const [openActions, setOpenActions] = React.useState();
+
   return (
     <StyledInput
+      onChange={(event) => setText(event.target.value)}
       fullWidth
       placeholder="Viết một tin nhắn..."
       variant="filled"
@@ -120,6 +124,18 @@ const ChatInput = ({ setOpenPicker }) => {
 const ConversationFooter = () => {
   const theme = useTheme();
   const [opentPicker, setOpenPicker] = React.useState();
+  const [text, setText] = useState("");
+  const dispatch = useDispatch();
+  const { conversationId } = useSelector((state) => state.signalr);
+
+  const onSendMessage = () => {
+    const body = {
+      ConversationId: conversationId,
+      Content: text,
+    };
+    dispatch(sendMessageAction(body));
+  };
+
   return (
     <>
       <Box
@@ -148,9 +164,14 @@ const ConversationFooter = () => {
                 onEmojiSelect={console.log}
               />
             </Box>
-            <ChatInput setOpenPicker={setOpenPicker} />
+            <ChatInput
+              text={text}
+              setText={setText}
+              setOpenPicker={setOpenPicker}
+            />
           </Stack>
           <Box
+            onClick={onSendMessage()}
             sx={{
               width: "48px",
               height: "48px",

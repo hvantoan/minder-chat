@@ -6,8 +6,8 @@ const initialState = {
   tab: 0,
 };
 
-const appSlices = createSlice({
-  name: "app",
+const homeSlices = createSlice({
+  name: "home",
   initialState: initialState,
   reducers: {
     //Sidebar
@@ -31,27 +31,27 @@ const appSlices = createSlice({
   },
 });
 
-export const selectApp = (state) => state?.app;
-export const { toggleSidebar, updateSidebarType } = appSlices.actions;
-export default appSlices.reducer;
+export const selectHome = (state) => state?.home;
+export const { toggleSidebar, updateSidebarType } = homeSlices.actions;
+export default homeSlices.reducer;
 
 // Snackbar Actions
 
 export const closeSnackBar = () => async (dispatch, getState) => {
-  dispatch(appSlices.actions.closeSnackbar());
+  dispatch(homeSlices.actions.closeSnackbar());
 };
 
 export const showSnackbar =
   ({ severity, message }) =>
   async (dispatch, getState) => {
     dispatch(
-      appSlices.actions.openSnackbar({
+      homeSlices.actions.openSnackbar({
         message,
         severity,
       })
     );
 
     setTimeout(() => {
-      dispatch(appSlices.actions.closeSnackbar());
+      dispatch(homeSlices.actions.closeSnackbar());
     }, 4000);
   };

@@ -15,6 +15,14 @@ const initialState = {
 const authSlices = createSlice({
   name: "auth",
   initialState: initialState,
+  reducers: {
+    loginSection(state, action) {
+      state.userAuth = action?.payload;
+      state.isAuth = true;
+      state.appError = undefined;
+      state.serverError = undefined;
+    },
+  },
   extraReducers: (builder, state) => {
     //Login
     builder
@@ -72,7 +80,7 @@ const authSlices = createSlice({
       });
   },
 });
-
+export const { loginSection } = authSlices.actions;
 export default authSlices.reducer;
 
 export const selectAuth = (state) => state?.auth;

@@ -10,13 +10,16 @@ import {
 } from "@mui/material";
 import { CaretDown, MagnifyingGlass, VideoCamera, Phone } from "phosphor-react";
 import { useTheme } from "@mui/material/styles";
-import { useDispatch } from "react-redux";
-import { StyledBadge } from "../../../share/StyleBadge";
-import { toggleSidebar } from "../../../redux/slices/appSlice";
+import { useDispatch, useSelector } from "react-redux";
+import StyledBadge from "../../../share/AvatarStyleBadge";
+import { toggleSidebar } from "../../../redux/slices/homeSlice";
+import AvatarStyleBadge from "../../../share/AvatarStyleBadge";
 
 export default function ConversationHeader() {
   const theme = useTheme();
   const dispatch = useDispatch();
+  const conversation = useSelector((state) => state.signalr.conversation);
+
   return (
     <Box
       p={2}
@@ -43,20 +46,12 @@ export default function ConversationHeader() {
           direction="row"
           spacing={2}>
           <Box>
-            <StyledBadge
-              overlap="circular"
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "right",
-              }}
-              variant="dot">
+            <AvatarStyleBadge isOnline={conversation.Online}>
               <Avatar alt={faker.name.fullName()} src={faker.image.avatar()} />
-            </StyledBadge>
+            </AvatarStyleBadge>
           </Box>
           <Stack spacing={0.2}>
-            <Typography variant="subtitle2">
-              {faker.name.fullName()}{" "}
-            </Typography>{" "}
+            <Typography variant="subtitle2">{conversation.Title}</Typography>
             <Typography variant="caption">Online</Typography>
           </Stack>
         </Stack>

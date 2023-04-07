@@ -11,7 +11,7 @@ import AntSwitch from "../AntSwitch";
 const getPath = (index) => {
   switch (index) {
     case 0:
-      return "/app";
+      return "/home";
 
     case 3:
       return "/settings";

@@ -183,10 +183,10 @@ const ImgMsg = ({ el, menu }) => {
   );
 };
 
-const TextMsg = ({ el, menu }) => {
+const TextMsg = ({ el, menu, isMySend }) => {
   const theme = useTheme();
   return (
-    <Stack direction="row" justifyContent={el.incoming ? "start" : "end"}>
+    <Stack direction="row" justifyContent={isMySend ? "start" : "end"}>
       <Box
         p={1.5}
         sx={{
