@@ -14,10 +14,11 @@ const signalrSlice = createSlice({
   },
   reducers: {
     onReceiveListMessage(state, action) {
-      state.messages.push(action.payload.messages);
+      if (action.payload.Messages) state.messages = action.payload.Messages;
     },
     onReceiveConversation(state, action) {
-      state.conversations = action.payload.Conversations;
+      if (action.payload.Conversations)
+        state.conversations = action.payload.Conversations;
     },
     onReceiveMessage(state, action) {
       state.messages.push(action.payload);
@@ -25,7 +26,19 @@ const signalrSlice = createSlice({
 
     onClickConversation(state, action) {
       state.conversation = action.payload;
+      state.messages = [];
       state.connection.invoke("JoinToRoom", state.conversation.Id);
+    },
+    onReceiveLastConversationId(state, action) {
+      const conversations = state.conversations.filter(
+        (el) => el.Id === action.payload
+      );
+      if (conversations) {
+        state.conversation = conversations[0];
+        console.log("Join Room:", state.conversation.Id);
+        state.messages = [];
+        state.connection.invoke("JoinToRoom", state.conversation.Id);
+      }
     },
   },
   extraReducers: (builder) => {
@@ -42,7 +55,7 @@ const signalrSlice = createSlice({
         console.error(action.error);
         state.isLoading = false;
       });
-
+    //Send Message
     builder
       .addCase(sendMessageAction.pending, (state) => {
         state.isLoading = true;
@@ -51,6 +64,7 @@ const signalrSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(sendMessageAction.rejected, (state, action) => {
+        console.error(action.error);
         state.isLoading = false;
       });
   },
@@ -63,6 +77,7 @@ export const {
   onReceiveMessage,
   onReceiveConversation,
   onClickConversation,
+  onReceiveLastConversationId,
 } = signalrSlice.actions;
 export default signalrSlice.reducer;
 

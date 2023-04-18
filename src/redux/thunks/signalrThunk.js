@@ -4,6 +4,7 @@ import {
   onReceiveConversation,
   onReceiveListMessage,
   onReceiveMessage,
+  onReceiveLastConversationId,
 } from "../slices/signalrSlice";
 import { isValidToken } from "../../utils/jwt";
 import { logoutAction } from "./authThunk";
@@ -21,7 +22,11 @@ export const connectSignalrAction = createAsyncThunk(
       dispatch(onReceiveListMessage(message));
     });
 
-    connection.on("ReciveMessage", (message) => {
+    connection.on("LastConversationId", (message) => {
+      dispatch(onReceiveLastConversationId(message));
+    });
+
+    connection.on("ReceiveMessage", (message) => {
       dispatch(onReceiveMessage(message));
     });
 

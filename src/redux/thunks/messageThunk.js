@@ -5,9 +5,7 @@ export const sendMessageAction = createAsyncThunk(
   "app/sendMessage",
   async (body, { rejectWithValue, getState, dispatch }) => {
     try {
-      const { data } = await messageApi.sendMessage(body);
-      console.log(data);
-      return data;
+      await messageApi.sendMessage(body);
     } catch (error) {
       if (!error?.response) {
         throw error;

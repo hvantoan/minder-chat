@@ -13,6 +13,7 @@ import { useTheme, alpha } from "@mui/material/styles";
 import truncateString from "../../../utils/truncate";
 import { Image, DownloadSimple, DotsThreeVertical } from "phosphor-react";
 import { Message_options } from "../../../data";
+import { useSelector } from "react-redux";
 
 const DocMsg = ({ el, menu }) => {
   const theme = useTheme();
@@ -183,14 +184,16 @@ const ImgMsg = ({ el, menu }) => {
   );
 };
 
-const TextMsg = ({ el, menu, isMySend }) => {
+const TextMsg = ({ el, menu }) => {
   const theme = useTheme();
+  const { id } = useSelector((state) => state.auth.userAuth);
+  const isMySend = id === el.SenderId;
   return (
-    <Stack direction="row" justifyContent={isMySend ? "start" : "end"}>
+    <Stack direction="row" justifyContent={!isMySend ? "start" : "end"}>
       <Box
         p={1.5}
         sx={{
-          backgroundColor: el.incoming
+          backgroundColor: !isMySend
             ? theme.palette.background.default
             : theme.palette.primary.main,
           borderRadius: 1.5,
@@ -198,8 +201,8 @@ const TextMsg = ({ el, menu, isMySend }) => {
         }}>
         <Typography
           variant="body2"
-          color={el.incoming ? theme.palette.text : "#FFF"}>
-          {el.message}
+          color={!isMySend ? theme.palette.text : "#FFF"}>
+          {el.Content}
         </Typography>
       </Box>
       {menu && <MessageOptions />}

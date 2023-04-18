@@ -1,9 +1,11 @@
 import ThemeProvider from "./theme";
 import ThemeSettings from "./components/settings";
 import { Snackbar, Alert as MuiAlert } from "@mui/material";
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import AppRouter from "./routers/AppRouter";
+import { loginSection } from "./redux/slices/authSlice";
+import { connectSignalrAction } from "./redux/thunks/signalrThunk";
 
 const vertical = "bottom";
 const horizontal = "center";
@@ -13,6 +15,16 @@ const Alert = React.forwardRef((props, ref) => (
 ));
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const userAuth = JSON.parse(localStorage.getItem("userInfo"));
+    if (userAuth) {
+      dispatch(loginSection(userAuth));
+      dispatch(connectSignalrAction(userAuth.token));
+    }
+  }, [dispatch]);
+
   const { severity, message, open } = useSelector(
     (state) => state.home.snackbar
   );
